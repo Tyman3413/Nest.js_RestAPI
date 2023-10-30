@@ -4,7 +4,7 @@
 
 | Method | Request |
 |-----|-----|
-| getList | GET http://my.api.url/events?sort=["name","ASC"]&range=[0, 24]&filter={"start_date":""} |
+| getList | GET http://my.api.url/events?sort=["name","ASC"]&range=[0,24]&filter={"start_date":""} |
 | getOne | GET http://my.api.url/events/123 |
 | getMany | GET http://my.api.url/events?filter={"id":[123,456,789]} |
 | getManyReference | GET http://my.api.url/venues?filter={"event_id":345} |
