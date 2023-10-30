@@ -6,12 +6,18 @@ import {
   Query,
 } from '@nestjs/common';
 import { EventService } from './event.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('venues')
+@ApiTags('RestAPI')
 export class VenuesController {
   constructor(private readonly eventService: EventService) {}
 
   @Get()
+  @ApiOperation({
+    summary: 'Get many reference of Event (using Venue table)',
+    tags: ['RestAPI'],
+  })
   async getManyReference(@Query('filter') filter: string) {
     try {
       const filterOptions = JSON.parse(filter);
