@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DatePeriods } from './date-periods';
+import { DatePeriods } from './date-periods.entity';
 import { Venue } from './venue.entity';
 
 enum Status {

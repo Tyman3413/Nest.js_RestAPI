@@ -1,26 +1,26 @@
 -- 1. Заполнение таблицы Venue
 INSERT INTO venue (name, country, state, city, time_zone, zip_code, address)
 VALUES
-   ('Cafe', 'USA', 'Nevada', 'Las-Vegas', 'UTC−7 PDT', '32415', 'Citrus Hills Ave'),
-	('Convention Center', 'Canada', 'Ontario', 'Toronto', 'UTC−4 EDT', '48732', 'Maple Street'),
-	('Arena', 'Australia', 'New South Wales', 'Sydney', 'UTC+10 AEST', '12345', 'Harbor View Drive'),
-	('Exhibition Hall', 'UK', 'England', 'London', 'UTC+1 BST', '56789', 'Bakers Lane'),
-	('Conference Center', 'Germany', 'Bavaria', 'Munich', 'UTC+2 CEST', '98765', 'Hofbräuhaus Platz'),
-	('Meeting Space', 'France', 'Île-de-France', 'Paris', 'UTC+2 CEST', '34567', 'Champs-Élysées'),
-	('Expo Venue', 'Japan', 'Tokyo', 'Tokyo', 'UTC+9 JST', '65432', 'Sakura Street'),
-	('Convention Hall', 'Spain', 'Catalonia', 'Barcelona', 'UTC+2 CEST', '23456', 'Rambla de Catalunya'),
-	('Trade Center', 'Brazil', 'São Paulo', 'São Paulo', 'UTC−3 BRT', '87654', 'Avenida Paulista'),
-	('Seminar Room', 'South Korea', 'Seoul', 'Seoul', 'UTC+9 KST', '54321', 'Gangnam Street'),
-	('Theater', 'Mexico', 'Mexico City', 'Mexico City', 'UTC−5 CDT', '65478', 'Avenida Insurgentes'),
-	('Exhibition Center', 'Italy', 'Lombardy', 'Milan', 'UTC+2 CEST', '12346', 'Via Montenapoleone'),
-	('Event Venue', 'China', 'Beijing', 'Beijing', 'UTC+8 CST', '98765', 'Wangfujing Street'),
-	('Conference Hall', 'Russia', 'Moscow', 'Moscow', 'UTC+3 MSK', '87654', 'Tverskaya Street'),
-	('Convention Space', 'South Africa', 'Gauteng', 'Johannesburg', 'UTC+2 SAST', '56789', 'Sandton Drive'),
-	('Expo Center', 'United Arab Emirates', 'Dubai', 'Dubai', 'UTC+4 GST', '43210', 'Sheikh Zayed Road'),
-	('Seminar Hall', 'India', 'Maharashtra', 'Mumbai', 'UTC+5:30 IST', '34567', 'Marine Drive'),
-	('Meeting Venue', 'Argentina', 'Buenos Aires', 'Buenos Aires', 'UTC−3 ART', '87654', 'Avenida Corrientes'),
-	('Auditorium', 'Canada', 'Quebec', 'Montreal', 'UTC−4 EDT', '78901', 'Sainte-Catherine Street'),
-	('Exhibition Pavilion', 'Germany', 'North Rhine-Westphalia', 'Düsseldorf', 'UTC+2 CEST', '23456', 'Königsallee')
+   ('Cafe', 'USA', 'Nevada', 'Las-Vegas', 'America/Los_Angeles', '32415', 'Citrus Hills Ave'),
+	('Convention Center', 'Canada', 'Ontario', 'Toronto', 'America/Toronto', '48732', 'Maple Street'),
+	('Arena', 'Australia', 'New South Wales', 'Sydney', 'Australia/Sydney', '12345', 'Harbor View Drive'),
+	('Exhibition Hall', 'UK', 'England', 'London', 'Europe/London', '56789', 'Bakers Lane'),
+	('Conference Center', 'Germany', 'Bavaria', 'Munich', 'Europe/Berlin', '98765', 'Hofbräuhaus Platz'),
+	('Meeting Space', 'France', 'Île-de-France', 'Paris', 'Europe/Paris', '34567', 'Champs-Élysées'),
+	('Expo Venue', 'Japan', 'Tokyo', 'Tokyo', 'Asia/Tokyo', '65432', 'Sakura Street'),
+	('Convention Hall', 'Spain', 'Catalonia', 'Barcelona', 'Europe/Madrid', '23456', 'Rambla de Catalunya'),
+	('Trade Center', 'Brazil', 'São Paulo', 'São Paulo', 'America/Sao_Paulo', '87654', 'Avenida Paulista'),
+	('Seminar Room', 'South Korea', 'Seoul', 'Seoul', 'Asia/Seoul', '54321', 'Gangnam Street'),
+	('Theater', 'Mexico', 'Mexico City', 'Mexico City', 'America/Mexico_City', '65478', 'Avenida Insurgentes'),
+	('Exhibition Center', 'Italy', 'Lombardy', 'Milan', 'Europe/Rome', '12346', 'Via Montenapoleone'),
+	('Event Venue', 'China', 'Beijing', 'Beijing', 'Asia/Shanghai', '98765', 'Wangfujing Street'),
+	('Conference Hall', 'Russia', 'Moscow', 'Moscow', 'Europe/Moscow', '87654', 'Tverskaya Street'),
+	('Convention Space', 'South Africa', 'Gauteng', 'Johannesburg', 'Africa/Johannesburg', '56789', 'Sandton Drive'),
+	('Expo Center', 'United Arab Emirates', 'Dubai', 'Dubai', 'Asia/Dubai', '43210', 'Sheikh Zayed Road'),
+	('Seminar Hall', 'India', 'Maharashtra', 'Mumbai', 'Asia/Kolkata', '34567', 'Marine Drive'),
+	('Meeting Venue', 'Argentina', 'Buenos Aires', 'Buenos Aires', 'America/Argentina/Buenos_Aires', '87654', 'Avenida Corrientes'),
+	('Auditorium', 'Canada', 'Quebec', 'Montreal', 'America/Toronto', '78901', 'Sainte-Catherine Street'),
+	('Exhibition Pavilion', 'Germany', 'North Rhine-Westphalia', 'Düsseldorf', 'Europe/Berlin', '23456', 'Königsallee')
 ;
 
 -- 2. Заполнение таблицы Event

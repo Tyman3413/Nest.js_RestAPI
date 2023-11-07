@@ -8,7 +8,7 @@ import { Event } from './event.entity';
 import { Repository } from 'typeorm';
 import { VenueDto } from './venue.dto';
 import { Venue } from './venue.entity';
-import { DatePeriods } from './date-periods';
+import { DatePeriods } from './date-periods.entity';
 import { EventDto } from './event.dto';
 
 @Injectable()
@@ -99,14 +99,12 @@ export class EventService {
   }
 
   async create(createEventDto: EventDto) {
-    // Создайте новый объект Event из CreateEventDto
     const newEvent = new Event();
     newEvent.name = createEventDto.name;
     newEvent.description = createEventDto.description;
     newEvent.thumbnail = createEventDto.thumbnail;
     newEvent.status = createEventDto.status;
 
-    // Проверьте, предоставлены ли данные Venue
     if (createEventDto.venue) {
       const venueDto: VenueDto = createEventDto.venue;
       const venue = new Venue();
@@ -121,7 +119,6 @@ export class EventService {
       newEvent.venue = await this.venueRepository.save(venue);
     }
 
-    // Проверьте, предоставлены ли данные DatePeriods
     if (createEventDto.date_periods && createEventDto.date_periods.length > 0) {
       newEvent.date_periods = [];
       for (const datePeriodDto of createEventDto.date_periods) {
@@ -181,10 +178,8 @@ export class EventService {
       );
     }
 
-    // Удаление мероприятия
     await this.eventRepository.remove(event);
 
-    // Удаление связанной записи в таблице Venue
     if (event.venue) {
       await this.venueRepository.remove(event.venue);
     }

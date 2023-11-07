@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatePeriods } from 'src/event/date-periods';
+import { DatePeriods } from 'src/event/date-periods.entity';
 import { EventController } from 'src/event/event.controller';
 import { Event } from 'src/event/event.entity';
 import { EventService } from 'src/event/event.service';
