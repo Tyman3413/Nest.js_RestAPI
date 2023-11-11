@@ -1,4 +1,7 @@
--- 1. Заполнение таблицы Venue
+-- 1. Устанавливаем часовой пояс базы данных
+ALTER DATABASE "Test" SET timezone = 'UTC';
+
+-- 2. Заполнение таблицы Venue
 INSERT INTO venue (name, country, state, city, time_zone, zip_code, address)
 VALUES
    ('Cafe', 'USA', 'Nevada', 'Las-Vegas', 'America/Los_Angeles', '32415', 'Citrus Hills Ave'),
@@ -23,7 +26,7 @@ VALUES
 	('Exhibition Pavilion', 'Germany', 'North Rhine-Westphalia', 'Düsseldorf', 'Europe/Berlin', '23456', 'Königsallee')
 ;
 
--- 2. Заполнение таблицы Event
+-- 3. Заполнение таблицы Event
 INSERT INTO event (name, description, "venueId", thumbnail, status)
 VALUES
    ('Happy Birthday', 'description', 1, 'img8285391203', 'ACTIVE'),
@@ -48,37 +51,183 @@ VALUES
    ('Tech Conference', 'description', 20, 'img3210987654', 'POSTPONED')
 ;
 
--- 3. Заполнение таблицы DatePeriods
+-- 4. Заполнение таблицы DatePeriods
 INSERT INTO date_periods (start_time, end_time, "event_id")
-VALUES
-   ('2023-06-01 08:00:00', '2023-06-01 20:00:00', 1),
-   ('2023-06-02 12:00:00', '2023-06-02 16:00:00', 2),
-   ('2023-06-03 08:00:00', '2023-06-03 20:00:00', 3),
-   ('2023-06-04 12:00:00', '2023-06-04 16:00:00', 4),
-   ('2023-06-05 08:00:00', '2023-06-05 20:00:00', 5),
-   ('2023-06-06 12:00:00', '2023-06-06 16:00:00', 6),
-   ('2023-06-07 08:00:00', '2023-06-07 20:00:00', 7),
-   ('2023-06-08 12:00:00', '2023-06-08 16:00:00', 8),
-   ('2023-06-09 08:00:00', '2023-06-09 20:00:00', 9),
-   ('2023-06-10 12:00:00', '2023-06-10 16:00:00', 10),
-   ('2023-06-11 08:00:00', '2023-06-11 20:00:00', 11),
-   ('2023-06-12 12:00:00', '2023-06-12 16:00:00', 12),
-   ('2023-06-13 08:00:00', '2023-06-13 20:00:00', 13),
-   ('2023-06-14 12:00:00', '2023-06-14 16:00:00', 14),
-   ('2023-06-15 08:00:00', '2023-06-15 20:00:00', 15),
-   ('2023-06-16 12:00:00', '2023-06-16 16:00:00', 16),
-   ('2023-06-17 08:00:00', '2023-06-17 20:00:00', 17),
-   ('2023-06-18 12:00:00', '2023-06-18 16:00:00', 18),
-   ('2023-06-19 08:00:00', '2023-06-19 20:00:00', 19),
-   ('2023-06-20 12:00:00', '2023-06-20 16:00:00', 20),
-   ('2023-06-21 08:00:00', '2023-06-21 20:00:00', 1),
-   ('2023-06-22 12:00:00', '2023-06-22 16:00:00', 2),
-   ('2023-06-23 08:00:00', '2023-06-23 20:00:00', 3),
-   ('2023-06-24 12:00:00', '2023-06-24 16:00:00', 4),
-   ('2023-06-25 08:00:00', '2023-06-25 20:00:00', 5),
-   ('2023-06-26 12:00:00', '2023-06-26 16:00:00', 6),
-   ('2023-06-27 08:00:00', '2023-06-27 20:00:00', 7),
-   ('2023-06-28 12:00:00', '2023-06-28 16:00:00', 8),
-   ('2023-06-29 08:00:00', '2023-06-29 20:00:00', 9),
-   ('2023-06-30 12:00:00', '2023-06-30 16:00:00', 10)
-;
+SELECT
+  ('2023-06-01 08:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-01 20:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  1
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 1;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-02 12:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-02 16:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  2
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 2;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-03 10:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-03 18:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  3
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 3;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-04 14:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-04 22:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  4
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 4;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-05 09:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-05 17:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  5
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 5;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-06 11:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-06 19:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  6
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 6;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-07 14:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-07 22:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  7
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 7;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-08 16:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-08 23:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  8
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 8;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-09 10:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-09 18:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  9
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 9;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-10 12:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-10 20:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  10
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 10;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-10 12:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-10 20:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  10
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 10;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-12 10:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-12 18:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  12
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 12;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-13 14:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-13 20:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  13
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 13;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-14 09:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-14 17:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  14
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 14;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-15 12:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-15 20:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  15
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 15;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-16 16:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-16 22:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  16
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 16;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-17 11:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-17 19:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  17
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 17;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-18 10:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-18 18:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  18
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 18;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-19 15:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-19 23:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  19
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 19;
+
+INSERT INTO date_periods (start_time, end_time, "event_id")
+SELECT
+  ('2023-06-20 08:00:00' AT TIME ZONE venue.time_zone) AS start_time,
+  ('2023-06-20 16:00:00' AT TIME ZONE venue.time_zone) AS end_time,
+  20
+FROM event
+JOIN venue ON event."venueId" = venue.id
+WHERE event.id = 20;

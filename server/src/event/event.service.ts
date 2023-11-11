@@ -10,6 +10,7 @@ import { VenueDto } from './venue.dto';
 import { Venue } from './venue.entity';
 import { DatePeriods } from './date-periods.entity';
 import { EventDto } from './event.dto';
+import { ResultEventDTO } from './event-result.dto';
 
 @Injectable()
 export class EventService {
@@ -24,14 +25,17 @@ export class EventService {
     private datePeriodsRepository: Repository<DatePeriods>,
   ) {}
 
-  async getList(sort: string, range: string, filter: string) {
+  async getList(
+    sort: string,
+    range: string,
+    filter: string,
+  ): Promise<{ data: Event[] }> {
     const sortOptions = JSON.parse(sort);
     const rangeMatches = range.match(/\[(\d+),(\d+)\]/);
     const start = parseInt(rangeMatches[1], 10);
     const end = parseInt(rangeMatches[2], 10);
     const filterOptions = JSON.parse(filter);
     const startDate = filterOptions.start_date;
-    // const startDate = filterOptions.start_date.replace(/(\d{2})$/, '+$1');
 
     const query = this.eventRepository.createQueryBuilder('event');
 
@@ -60,17 +64,20 @@ export class EventService {
     };
   }
 
-  async getOne(id: number) {
-    const query = this.eventRepository
+  async getOne(id: number): Promise<{ data: Event }> {
+    const data = await this.eventRepository
       .createQueryBuilder('event')
       .where('event.id = :id', { id })
       .leftJoinAndSelect('event.venue', 'venue')
-      .leftJoinAndSelect('event.date_periods', 'date_periods');
+      .leftJoinAndSelect('event.date_periods', 'date_periods')
+      .getOne();
 
-    return query.getOne();
+    return {
+      data,
+    };
   }
 
-  async getMany(filter: string) {
+  async getMany(filter: string): Promise<{ data: Event[] }> {
     const filterOptions = JSON.parse(filter);
     const { id } = filterOptions;
 
@@ -78,14 +85,16 @@ export class EventService {
       throw new BadRequestException('Invalid filter format.');
     }
 
-    const events = await this.eventRepository
+    const data = await this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.date_periods', 'date_periods')
       .leftJoinAndSelect('event.venue', 'venue')
       .whereInIds(id)
       .getMany();
 
-    return events;
+    return {
+      data,
+    };
   }
 
   async getManyReference(eventId: number) {
@@ -98,7 +107,7 @@ export class EventService {
     return venues.map((event) => event.venue);
   }
 
-  async create(createEventDto: EventDto) {
+  async create(createEventDto: EventDto): Promise<{ data: ResultEventDTO }> {
     const newEvent = new Event();
     newEvent.name = createEventDto.name;
     newEvent.description = createEventDto.description;
@@ -131,57 +140,86 @@ export class EventService {
       }
     }
 
-    return await this.eventRepository.save(newEvent);
+    const savedEvent = await this.eventRepository.save(newEvent);
+    const resultEventDto = new ResultEventDTO(
+      savedEvent.id,
+      savedEvent.name,
+      savedEvent.description,
+      savedEvent.thumbnail,
+      savedEvent.status,
+      savedEvent.venue,
+      savedEvent.date_periods,
+    );
+
+    return { data: resultEventDto };
   }
 
-  async update(id: number, updateEventDto: EventDto) {
-    const event = await this.eventRepository.findOne({ where: { id: id } });
+  async update(
+    id: number,
+    updateEventDto: EventDto,
+  ): Promise<{ data: ResultEventDTO }> {
+    const existingEvent = await this.eventRepository.findOne({
+      where: { id: id },
+    });
 
-    if (!event) {
-      return null;
-    }
+    existingEvent.name = updateEventDto.name || existingEvent.name;
+    existingEvent.description =
+      updateEventDto.description || existingEvent.description;
+    existingEvent.thumbnail =
+      updateEventDto.thumbnail || existingEvent.thumbnail;
+    existingEvent.status = updateEventDto.status || existingEvent.status;
 
-    if (updateEventDto.name) {
-      event.name = updateEventDto.name;
-    }
+    const updatedEvent = await this.eventRepository.save(existingEvent);
 
-    if (updateEventDto.description) {
-      event.description = updateEventDto.description;
-    }
+    const resultEventDto = new ResultEventDTO(
+      updatedEvent.id,
+      updatedEvent.name,
+      updatedEvent.description,
+      updatedEvent.thumbnail,
+      updatedEvent.status,
+      updatedEvent.venue,
+      updatedEvent.date_periods,
+    );
 
-    if (updateEventDto.thumbnail) {
-      event.thumbnail = updateEventDto.thumbnail;
-    }
-
-    if (updateEventDto.status) {
-      event.status = updateEventDto.status;
-    }
-
-    return this.eventRepository.save(event);
+    return { data: resultEventDto };
   }
 
-  async delete(id: number) {
-    const event = await this.eventRepository.findOne({
+  async delete(id: number): Promise<{ data: ResultEventDTO }> {
+    const existingEvent = await this.eventRepository.findOne({
       where: { id: id },
       relations: ['date_periods', 'venue'],
     });
 
-    if (!event) {
+    if (!existingEvent) {
       throw new NotFoundException(`Event with ID ${id} not found`);
     }
 
-    if (event.date_periods) {
+    const deletedEvent = { ...existingEvent };
+
+    if (existingEvent.date_periods) {
       await Promise.all(
-        event.date_periods.map(async (datePeriod) => {
+        existingEvent.date_periods.map(async (datePeriod) => {
           await this.datePeriodsRepository.remove(datePeriod);
         }),
       );
     }
 
-    await this.eventRepository.remove(event);
+    await this.eventRepository.remove(existingEvent);
 
-    if (event.venue) {
-      await this.venueRepository.remove(event.venue);
+    if (existingEvent.venue) {
+      await this.venueRepository.remove(existingEvent.venue);
     }
+
+    const resultEventDto = new ResultEventDTO(
+      deletedEvent.id,
+      deletedEvent.name,
+      deletedEvent.description,
+      deletedEvent.thumbnail,
+      deletedEvent.status,
+      deletedEvent.venue,
+      deletedEvent.date_periods,
+    );
+
+    return { data: resultEventDto };
   }
 }
